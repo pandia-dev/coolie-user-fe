@@ -1,0 +1,141 @@
+<div class="container">
+
+    <div class="header">
+        <div class="arrow-logo">
+            <span class="material-symbols-outlined" (click)="navToBack()">
+                keyboard_backspace
+            </span>
+            <img src="assets/icons/logo.png">
+        </div>
+        <div class="support-cart">
+            <img src="assets/icons/customer-support.png">
+            <span class="material-symbols-outlined" style="font-size: 28px;" (click)="navToCart()">
+                shopping_cart
+            </span>
+        </div>
+    </div>
+    <section class="sub-container">
+        <div class="service">
+
+            @for (item of services; track $index) {
+            <div class="service-div" (click)="selectedCategory(item._id,$index)"
+            [ngClass]="{'selectedCat': $index === selectedCat}">
+
+                <div class="service-image">
+                    <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.imageKey">
+                </div>
+                <span>{{item.name}}</span>
+            </div>
+
+            }
+        </div>
+        
+        <div class="selectedCategory-search">
+            <span> SelectedCategory</span>
+            <i class="bi bi-search search-icon" style="font-size: 1.3rem;"></i>
+        </div>
+
+        <!-- sub categoriess -->
+
+        <!-- <section class="section-sub-category">
+        <div class="subCategory-div">
+            @for (item of subCategory; track $index) {
+                <div class="subCategory" (click)="selectSubCategory($index)" [ngClass]="{'selected': $index === selectedSubCatIndex}">
+                    <div class="subCategory-img">
+                        <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.imageKey">
+                    </div>
+                    <span>{{item.name}}</span>
+                </div>
+            }
+        </div>
+
+        <div>
+            @for (item of subCategoryVarient; track $index) {
+                <div class="varient-div" >
+                    <div class="varient-img">
+                        <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.subCategoryId.imageKey">
+                    </div>
+                    <section>
+                        <div class="name-div">
+                                <span>{{item.name}}</span>
+                                @if (isExpand) {
+                                    <span class="material-symbols-outlined" (click)="expand()">
+                                        expand_circle_up
+                                    </span>
+                                }
+                                @else {
+                                    <span class="material-symbols-outlined" (click)="expand()">
+                                        expand_circle_down
+                                    </span>
+                                }
+                        </div>
+                        @if (isExpand) {
+                            <div>
+                                <span>
+                                    {{item.description}}
+                                </span>
+                            </div>
+                        }
+                       
+                        <div class="amount-btn">
+                            <span class="price">₹ {{item.serviceVariants[0].price}}</span>
+                            <div class="action-buttons">
+                                <div>
+                                     Add &nbsp;<button class="btn">-</button><span class="count">1</span><button class="btn">+</button>
+                                </div>
+                            </div>
+                          </div>
+                          
+                    </section>
+                </div>
+            }
+        </div>
+    </section> -->
+        <section class="section-sub-category">
+            <div class="subCategory-div">
+                <div class="subCategory" *ngFor="let item of subCategory; let i = index" (click)="selectSubCategory(i)"
+                    [ngClass]="{'selected': i === selectedSubCatIndex}">
+                    <div class="subCategory-img">
+                        <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.imageKey"
+                            alt="{{item.name}}">
+                    </div>
+                    <span>{{item.name}}</span>
+                </div>
+            </div>
+
+            <div class="subCategoryVarient-div">
+                <div class="varient-div" *ngFor="let item of subCategoryVarient; let i = index">
+                    <div class="varient-img">
+                        <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.subCategoryId.imageKey"
+                            alt="{{item.name}}">
+                    </div>
+                    <section>
+                        <div class="name-div">
+                            <span>{{item.name}}</span>
+                            <span class="material-symbols-outlined" (click)="expand(i)">
+                                {{ expandedIndex === i ? 'expand_circle_up' : 'expand_circle_down' }}
+                            </span>
+                        </div>
+                        <div *ngIf="expandedIndex === i" style="background-color: transparent;">
+                            <span>{{item.description}}</span>
+                        </div>
+                        <div class="amount-btn">
+                            <span class="price">₹ {{item.serviceVariants[0].price}}</span>
+                            <div class="action-buttons">
+                                <button (click)="addItem(item)" class="add-btn">Add</button>&nbsp;
+                                <span class="btns">
+                                    <button class="btn" (click)="decrementCount(item)">-</button>
+                                    <span class="count">{{item.count}}</span>
+                                    <button class="btn" (click)="incrementCount(item)">+</button>
+                                </span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </section>
+    </section>
+</div>
+
+<!-- <img [src]="'https://lh3.googleusercontent.com/a/ACg8ocKwh-NsXRtvfrKE5yUVRiFk-dAM7cpUFdpbWUyJBrQ1l-xVGw=s96-c'"> -->

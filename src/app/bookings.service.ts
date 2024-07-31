@@ -1,0 +1,32 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BookingsService {
+
+  name:any;
+  phoneNumber:any;
+  selectedJob:any;
+  constructor(private http:HttpClient) { }
+
+  selectedJobDetails(job:any){
+    console.log(job);
+    this.selectedJob=job
+
+  }
+
+  getSelectedJob():Observable<any>{
+    console.log(this.selectedJob);
+    return this.selectedJob;
+  }
+
+  getBookingHistory():Observable<any>{
+    const userId=localStorage.getItem('userId');
+    const api=`https://api.coolieno1.in/v1.0/users/order-history/user/${userId}`;
+    
+    return this.http.get<any>(api);
+  }
+}

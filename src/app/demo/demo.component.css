@@ -1,0 +1,116 @@
+.scrollable-tabs-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px 20px;
+    background-color: #E3E5FF;
+    border-radius: 5px;
+  }
+  
+  .scroll-button {
+    background-color: #E3E5FF;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 10px 15px;
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.3s;
+    z-index: 1;
+  }
+  
+  .scroll-button.left {
+    left: 10px;
+  }
+  
+  .scroll-button.right {
+    right: 10px;
+  }
+  
+  .scroll-button:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.1);
+  }
+  
+  .scrollable-tabs-container {
+    display: flex;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    padding: 10px 50px;
+  }
+  
+  .scrollable-tabs-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollable-tab {
+    display: inline-flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: 200px;
+    margin: 0 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    border-radius: 12px;
+    background-color: #E3E5FF;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  .scrollable-tab.selected {
+    background-color: #e0e0e0;
+    color: red;
+  }
+  
+  .scrollable-tab:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+  }
+  
+  .tab-image-container {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tab-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .scrollable-tab p {
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+  
+  .dropdown-icon {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    color: red;
+  }
+  

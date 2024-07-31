@@ -1,0 +1,32 @@
+<section class="container">
+    <div class="sub-container">
+           <div class="text">
+            <span>Login here</span>
+            <span>Welcome back you've been missed! </span>
+           </div>
+            <div class="number-div">
+                <form >
+                    
+                    <input type="tel" id="phoneNumber" placeholder="Mobile number" name="phoneNumber" [(ngModel)]="phoneNumber" class="number-input">
+                    <!-- <section class="checkBox-section">
+                        <input type="checkbox" class="checkbox"> &nbsp;
+                        <span>By continuing you are agreeing to our 
+                        terms and privacy policy</span>
+                    </section> -->
+
+                </form>
+                <button (click)="getOtp()">GET OTP</button>
+            </div>
+            <div id="recaptcha-container"></div>
+            <div class="dot">
+                <div class="line"></div>
+                <span>or</span>
+                <div class="line"></div>
+        </div>
+        <div class="google-div">
+                <button (click)="googleSign()">
+                    <span>Signin with </span> <img src="assets/icons/google icon.png">
+                </button>
+        </div>
+    </div>
+</section>

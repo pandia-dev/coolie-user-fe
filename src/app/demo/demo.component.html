@@ -1,0 +1,26 @@
+<div class="scrollable-tabs-wrapper">
+    <button class="scroll-button left" (click)="scrollLeft()">
+      
+    </button>
+    <div class="scrollable-tabs-container" #containerRef>
+      <div
+        *ngFor="let category of categoryData; let index = index"
+        [id]="'tab-' + category._id"
+        class="scrollable-tab"
+        [class.selected]="selectedCategoryIdLocal === category._id"
+        (click)="handleCategoryClick(category._id)"
+      >
+        <div class="tab-image-container">
+          <img
+            [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + category.imageKey"
+            [alt]="category.name"
+            class="tab-image"
+          />
+        </div>
+        <p>{{ category.name }}</p>
+        <div *ngIf="selectedCategoryIdLocal === category._id" class="dropdown-icon">▼</div>
+      </div>
+    </div>
+    
+  </div>
+  
