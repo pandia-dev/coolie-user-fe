@@ -21,8 +21,10 @@
         <div *ngFor="let services of service; let i = index" class="service-div" (click)="selectedCategory(services._id,i)">
           <!-- <img [src]="services.image"> -->
            <div class="img-div">
-              <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + services.imageKey">
-            </div>
+            <img [src]="services.imageKey" alt="{{services.name}}">
+           
+          </div>
+           
           <span>{{services.name}}</span>
         </div>
       </div>

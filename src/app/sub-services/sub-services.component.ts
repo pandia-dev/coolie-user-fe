@@ -63,6 +63,11 @@ export class SubServicesComponent implements OnInit{
         this.getSubCategoryVarient();
       },(error)=>{
         console.log(error);
+        console.log(error.error.message);
+        if (error.error.message==='No subcategories found for this category') {
+          this.subCategory=[];
+          this.subCategoryVarient=[];
+        }
       }
     )
   }

@@ -20,13 +20,15 @@ export class OrdersService {
     this.addressId=id;
   }
 
-  setOrder(item:any){
+  setOrder(item:any,totalAmount:number){
+    this.categoryId=[];
+    this.subCategoryId=[];
     item.forEach((i:any)=>{
       this.categoryId.push(i.categoryId._id)
       this.subCategoryId.push(i.subCategoryId._id)
     })
 
-    this.placeOrder(item)
+    this.placeOrder(item,totalAmount)
   }
 
   // placeOrder(items: any[]) {
@@ -64,7 +66,7 @@ export class OrdersService {
   //   );
   // }
   
-  placeOrder(items: any[]) {
+  placeOrder(items: any[],totalAmount:any) {
     console.log(items);
     const api = 'https://api.coolieno1.in/v1.0/users/order/create-order';
     console.log(this.categoryId);
@@ -78,7 +80,8 @@ export class OrdersService {
             userId: localStorage.getItem('userId'),             
             addressId: this.addressId,       
             categoryIds: this.categoryId,
-            subCategoryIds: this.subCategoryId,              
+            subCategoryIds: this.subCategoryId,  
+            totalAmount:totalAmount,            
             items: items.map(item => ({
               serviceId: item.serviceId, // Ensure correct property
               categoryId: item.categoryId, 

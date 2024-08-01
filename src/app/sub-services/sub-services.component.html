@@ -22,7 +22,7 @@
             [ngClass]="{'selectedCat': $index === selectedCat}">
 
                 <div class="service-image">
-                    <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.imageKey">
+                    <img [src]="item.imageKey">
                 </div>
                 <span>{{item.name}}</span>
             </div>
@@ -92,11 +92,15 @@
         </div>
     </section> -->
         <section class="section-sub-category">
+
+            @if (subCategory.length<=0) {
+                <span style="font-size:1.2rem;color:red">No Services Found for this category</span>
+            }@else {
             <div class="subCategory-div">
                 <div class="subCategory" *ngFor="let item of subCategory; let i = index" (click)="selectSubCategory(i)"
                     [ngClass]="{'selected': i === selectedSubCatIndex}">
                     <div class="subCategory-img">
-                        <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.imageKey"
+                        <img [src]="item.imageKey"
                             alt="{{item.name}}">
                     </div>
                     <span>{{item.name}}</span>
@@ -104,10 +108,10 @@
             </div>
 
             <div class="subCategoryVarient-div">
+              
                 <div class="varient-div" *ngFor="let item of subCategoryVarient; let i = index">
                     <div class="varient-img">
-                        <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.subCategoryId.imageKey"
-                            alt="{{item.name}}">
+                        <img [src]="item.image" alt="{{item.name}}">
                     </div>
                     <section>
                         <div class="name-div">
@@ -134,6 +138,7 @@
                 </div>
 
             </div>
+        }
         </section>
     </section>
 </div>

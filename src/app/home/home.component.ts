@@ -21,11 +21,11 @@ export class HomeComponent implements OnInit{
               private userDetailsService:UserDetailsService
   ){
     // this.router.navigate(['auth'])
-   
+    this.getService()
   }
 
   ngOnInit(): void {
-    this.getService()
+   
     this.getMostBookedservices();
     this.getUser()
    

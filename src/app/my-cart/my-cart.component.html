@@ -1,16 +1,16 @@
 <div class="container">
-    <span class="material-symbols-outlined" (click)="navToBack()">
-        keyboard_backspace
-    </span>
+    
     <div class="sub-container">
+        <span class="material-symbols-outlined" (click)="navToBack()">
+            keyboard_backspace
+        </span>
         <div>
             <app-select-address></app-select-address>
         </div>
         <div class="subCategoryVarient-div">
             <div class="varient-div" *ngFor="let item of subCategoryVarient; let i = index">
                 <div class="varient-img">
-                    <img [src]="'https://coolie1-dev.s3.ap-south-1.amazonaws.com/' + item.subCategoryId.imageKey"
-                        alt="{{item.name}}">
+                    <img [src]="item.image"alt="{{item.name}}">
                 </div>
                 <section>
                     <div class="name-div">
@@ -46,9 +46,15 @@
 
         <section class="booking-slot">
             <div class="book">
-                <span>{{selectedSechudle}}</span>
+                @if(selectedSechudle==undefined){
+                    <span (click)="showSchedule()">Select the Schedule</span>
+                }
+                @else {
+                    <span>{{selectedSechudle}}</span>
+                }
                 
-                <span class="material-symbols-outlined">
+                
+                <span class="material-symbols-outlined" (click)="showSchedule()">
                     calendar_today
                 </span>&nbsp;
             </div>
@@ -56,7 +62,7 @@
                 <input type="checkbox" (change)="navToSeparate()"><span> would like to have individual & different slots
                 for services choosen</span>
             </p>
-            <div class="working-dates">
+            <div class="working-dates" *ngIf="showScheduleSection">
                 <ng-container *ngFor="let item of nextFourDays; let index = index;">
                   <div class="datess" [ngClass]="{'selected': selectedIndex === index}" (click)="selected(item, index)">
                     <p>{{ item.day.substring(0,3).toUpperCase() }}</p>
@@ -66,7 +72,7 @@
                 </ng-container>
             </div>
 
-              <div class="time">
+              <div class="time" *ngIf="showScheduleSection">
                 <ng-container *ngFor="let item of timing; let index = index;" >
                     <div>
                         <input type="radio" name="time" [(ngModel)]="time" value={{item.time}} (change)="timeSelected()"><span >{{item.time}}</span>

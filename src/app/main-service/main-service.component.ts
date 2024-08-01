@@ -42,7 +42,7 @@ export class MainServiceComponent {
         this.services=response;
         this.serviceResponse=this.services
       },(error)=>{
-        console.log(error);
+        console.log(error)
       }
     )
   }

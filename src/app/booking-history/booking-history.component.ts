@@ -20,31 +20,13 @@ export class BookingHistoryComponent {
   ){
     this.getBookingHistory();
   }
-  jobs:any[]=[
-    {
-      date:'12/02/122',
-      name:'anil',
-      value:'100',
-      paymentDone:'100'
-    },
-    {
-      date:'12/02/122',
-      name:'anil',
-      value:'100',
-      paymentDone:'100'
-    },
-    {
-      date:'12/02/122',
-      name:'anil',
-      value:'100',
-      paymentDone:'100'
-    }
-  ]
+  jobs:any[]=[]
 
   getBookingHistory(){
     this.bookingService.getBookingHistory().subscribe({
       next:(response)=>{
         console.log(response);
+        this.jobs=response;
       },
       error:(err)=>{
         console.log(err);

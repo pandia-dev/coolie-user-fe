@@ -10,7 +10,7 @@
             
             <div class="section" (click)="selectedJob(item)">    
                     <div>
-                       <p> <span class="main-text">{{item.name}}</span></p>
+                       <p> <span class="main-text">{{item.userId.name}}</span></p>
                        <p> 
                             <span class="material-symbols-outlined" style="font-size: 1rem;" (click)="navToBack()"   >account_balance_wallet</span>&nbsp;
                             <span class="text">Job value:{{item.value}}</span>
@@ -21,9 +21,9 @@
                         </p>
                     </div>
                     <div>
-                        <span class="main-text">9:30</span>
+                        <span class="main-text">{{item.items[0].selectedTime  }}</span>
                         <br><br>
-                        <span class="text">89-0</span>
+                        <span class="text">{{item.items[0].selectedDate}}-{{item.items[0].selectedMonth}}</span>
                     </div>
                 </div> 
                 <br>

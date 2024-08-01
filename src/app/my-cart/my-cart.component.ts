@@ -3,6 +3,7 @@ import { MyCartService } from '../my-cart.service';
 import { Router } from '@angular/router';
 import { OrdersService } from '../orders.service';
 import { Location } from '@angular/common';
+import { RazorpayService } from '../razorpay.service';
 
 @Component({
   selector: 'app-my-cart',
@@ -19,13 +20,15 @@ export class MyCartComponent implements OnInit{
   constructor(private mycartService:MyCartService,
               private router:Router,
               private orderService:OrdersService,
-              private location:Location
+              private location:Location,
+              private razorpayService:RazorpayService
   ){
     
   }
   ngOnInit(): void {
     this.getNextFourDays()
     this.getCartItems();
+    
   }
 
   
@@ -71,6 +74,13 @@ export class MyCartComponent implements OnInit{
   }
   incrementCount(item:any){
     item.quantity++;
+  }
+
+  // schedule   
+
+  showScheduleSection:boolean=false;
+  showSchedule(){
+    this.showScheduleSection=!this.showScheduleSection
   }
 // date======
   nextFourDays: any[] = [];
@@ -176,7 +186,21 @@ export class MyCartComponent implements OnInit{
     this.subCategoryVarient=item
   }
   pay(){
-    this.orderService.setOrder(this.subCategoryVarient)
+    const currency = 'INR';
+    const orderId = 'order_id_from_backend';
+    this.razorpayService.payWithRazorpay(this.amount, orderId, currency).subscribe({
+      next:(data) => {
+        console.log('Payment successful', data);
+        this.orderService.setOrder(this.subCategoryVarient,this.amount)
+        // Handle successful payment
+      },
+      error:(err) => {
+        console.log('Payment failed', err);
+        alert("Something went wrong. please try again later.")
+        // Handle payment failure
+      }
+  });
+    // this.orderService.setOrder(this.subCategoryVarient)
   }
 
 

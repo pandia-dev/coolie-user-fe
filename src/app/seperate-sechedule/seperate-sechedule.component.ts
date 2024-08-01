@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MyCartService } from '../my-cart.service';
 import { Location } from '@angular/common';
 import { OrdersService } from '../orders.service';
+import { RazorpayService } from '../razorpay.service';
 
 @Component({
   selector: 'app-seperate-sechedule',
@@ -14,7 +15,8 @@ export class SeperateSecheduleComponent {
   subCategoryVarient:any=[];
   constructor(private mycartService:MyCartService,
               private location:Location,
-              private orderService:OrdersService
+              private orderService:OrdersService,
+              private razorpayService:RazorpayService
   ){
     
   }
@@ -166,7 +168,19 @@ export class SeperateSecheduleComponent {
         throw new Error("Something went wrong.")
       }
       console.log(this.readyToOrder);
-      this.orderService.setOrder(this.readyToOrder);
+      const orderId="1234";
+      const currency='INR'
+      this.razorpayService.payWithRazorpay(this.amount,orderId,currency).subscribe({
+        next:(data)=>{
+          console.log("Paid",data);
+          this.orderService.setOrder(this.readyToOrder,this.amount);
+        },
+        error:(err)=>{
+          console.log(err);
+          alert("something went wrong");
+        }
+      })
+     
     } catch (error) {
       alert("Something went Wrong. Please try again with date and time ")
     }

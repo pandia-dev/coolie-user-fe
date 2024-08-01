@@ -25,7 +25,7 @@ export class BookingsService {
 
   getBookingHistory():Observable<any>{
     const userId=localStorage.getItem('userId');
-    const api=`https://api.coolieno1.in/v1.0/users/order-history/user/${userId}`;
+    const api=`https://api.coolieno1.in/v1.0/users/order/${userId}`;
     
     return this.http.get<any>(api);
   }
