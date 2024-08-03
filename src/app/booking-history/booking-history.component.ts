@@ -26,7 +26,8 @@ export class BookingHistoryComponent {
     this.bookingService.getBookingHistory().subscribe({
       next:(response)=>{
         console.log(response);
-        this.jobs=response;
+        // this.jobs=response;
+        this.addingTotalAmount(response);
       },
       error:(err)=>{
         console.log(err);
@@ -39,4 +40,26 @@ export class BookingHistoryComponent {
     this.router.navigate(['bookingDetails'])
   }
 
+  addingTotalAmount(history:any[]){
+    history.forEach((entry: any) => {
+      let totalAmount = 0; // Initialize totalAmount outside the inner loop
+    
+      if (entry.items && Array.isArray(entry.items)) {
+        entry.items.forEach((item: any) => {
+          // Check if serviceVariants array exists and has at least one element
+          if (item.serviceId && item.serviceId.serviceVariants && item.serviceId.serviceVariants.length > 0) {
+            totalAmount += item.serviceId.serviceVariants[0].price * item.quantity;
+          }
+        });
+      } else {
+        console.error("No items found for entry:", entry);
+      }
+      entry.totalAmount = totalAmount;
+      // console.log(totalAmount);
+       // Output the calculated total amount for the current entry
+    });
+    
+      this.jobs=history
+      console.log(this.jobs);
+  }
 }

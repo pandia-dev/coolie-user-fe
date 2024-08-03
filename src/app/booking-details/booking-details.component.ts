@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BookingsService } from '../bookings.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-booking-details',
@@ -21,10 +22,12 @@ export class BookingDetailsComponent {
   )
   {
     this.bookingService.getSelectedJob()
-    console.log( this.bookingService.getSelectedJob());
-   
+    
+   this.jobDetails.push(this.bookingService.selectedJob);
+   console.log( this.jobDetails);
   }
 
+  jobDetails:any=[];
   noJobs:any=[
     {
      jobs:[{

@@ -18,7 +18,7 @@ export class BookingsService {
 
   }
 
-  getSelectedJob():Observable<any>{
+  getSelectedJob(){
     console.log(this.selectedJob);
     return this.selectedJob;
   }
