@@ -102,18 +102,18 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthenticationService {
   phoneNumber: string = '';
-  otp: string = '';
+  otp:any;
   verificationId: string = '';
   
   recaptchaVerifier: firebase.auth.RecaptchaVerifier | undefined;
 
   constructor(
     private afAuth: AngularFireAuth,
-    private toastService: ToastrsService,
-    private router: Router,
-    private http:HttpClient
+    private readonly toastService:ToastrsService,
+    private readonly router: Router,
+    private readonly http:HttpClient
   ) {
-    this.toastService.showSuccess('please verify phonr number',"success");
+   
   }
 
   ngOnInit() {
@@ -152,7 +152,7 @@ export class AuthenticationService {
       // this.sendGoogleSignIn(result.user)
       this.userDetailsFromGoogle=result.user;
       alert("please verify phone number");
-      this.toastService.showSuccess('please verify phonr number',"success");
+     
       console.log(this.userDetailsFromGoogle.email);
       console.log(this.userDetailsFromGoogle.multiFactor.user);
      

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
@@ -8,18 +8,18 @@ import { AuthenticationService } from '../../authentication.service';
   templateUrl: './verify-otp.component.html',
   styleUrl: './verify-otp.component.css'
 })
-export class VerifyOTPComponent {
+export class VerifyOTPComponent implements OnInit {
   @ViewChild('input1') input1!: ElementRef 
   @ViewChild('input2') input2!: ElementRef
   @ViewChild('input3') input3!: ElementRef 
   @ViewChild('input4') input4!: ElementRef 
   @ViewChild('input5') input5!: ElementRef 
   @ViewChild('input6') input6!: ElementRef 
-  otp: FormGroup;
+  public otp: FormGroup;
 
-  constructor(private form: FormBuilder,
-              private authService:AuthenticationService,
-              private router:Router
+  constructor(private readonly form: FormBuilder,
+              private readonly authService:AuthenticationService,
+              private readonly router:Router
               ) { 
     this.otp = this.form.group({
       inputOne: '',
@@ -29,6 +29,10 @@ export class VerifyOTPComponent {
        inputFive: '',
         inputSix: ''
     });
+  }
+
+  ngOnInit(): void {
+      this.getOtp();
   }
 
   onInput(event: any, position: number) {
@@ -58,6 +62,12 @@ export class VerifyOTPComponent {
     }
   }
 
+  getOtp(){
+    setTimeout(()=>{
+      alert(this.authService.otp.otp);
+    },7000)
+    
+  }
   login() {
     const enterOtp=this.otp.value.inputOne+this.otp.value.inputTwo+this.otp.value.inputThree+this.otp.value.inputFour+this.otp.value.inputFive+this.otp.value.inputSix
     const intOtp = parseInt(enterOtp, 10);

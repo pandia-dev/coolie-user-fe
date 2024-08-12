@@ -24,6 +24,7 @@ import { AboutComponent } from './about/about.component';
 import { HelpsComponent } from './helps/helps.component';
 import { AddAddressComponent } from './add-address/add-address.component';
 import { AfterOrderComponent } from './after-order/after-order.component';
+import { MapsComponent } from './maps/maps.component';
 
 const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -51,7 +52,8 @@ const routes: Routes = [
   {path:'orderDetails',component:OrderDetailsComponent},
   {path:'provider',loadChildren:()=>import ('../app/providerdetails/providerdetails.module').then(i=>i.ProviderdetailsModule)},
   {path:'demo',component:DemoComponent},
-  {path:'afterOrder',component:AfterOrderComponent}
+  {path:'afterOrder',component:AfterOrderComponent},
+  {path:'maps',component:MapsComponent}
 ];
 
 @NgModule({

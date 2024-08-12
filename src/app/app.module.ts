@@ -94,6 +94,7 @@ import { HelpsComponent } from './helps/helps.component';
 import { AddAddressComponent } from './add-address/add-address.component';
 import { SelectAddressComponent } from './select-address/select-address.component';
 import { AfterOrderComponent } from './after-order/after-order.component';
+import { MapsComponent } from './maps/maps.component';
 
 
 
@@ -126,6 +127,7 @@ import { AfterOrderComponent } from './after-order/after-order.component';
     AddAddressComponent,
     SelectAddressComponent,
     AfterOrderComponent,
+    MapsComponent,
   
    
    

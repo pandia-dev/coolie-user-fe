@@ -8,7 +8,7 @@ import { MapboxService } from '../../mapbox.service';
 })
 export class TrackproviderComponent implements OnInit {
 
-  constructor(private mapBoxservice:MapboxService){
+  constructor(private readonly mapBoxservice:MapboxService){
 
   }
 

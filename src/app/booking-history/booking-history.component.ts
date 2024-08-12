@@ -14,13 +14,13 @@ export class BookingHistoryComponent {
   navToBack(){
     this.location.back()
   }
-  constructor(private location:Location,
-              private bookingService:BookingsService,
-              private router:Router
+  constructor(private readonly location:Location,
+              private readonly bookingService:BookingsService,
+              private readonly router:Router
   ){
     this.getBookingHistory();
   }
-  jobs:any[]=[]
+  public jobs:any[]=[]
 
   getBookingHistory(){
     this.bookingService.getBookingHistory().subscribe({

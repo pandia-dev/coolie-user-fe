@@ -16,7 +16,7 @@ export class DemoComponent {
   visibleTabs = 5; // Number of tabs visible at once
   buttonWidth = 70; // Width of the arrow buttons
 
-  constructor(private categoryService: DemoService) {}
+  constructor(private readonly categoryService: DemoService) {}
 
   ngOnInit(): void {
     this.categoryService.getCategoryData().subscribe(
@@ -82,4 +82,104 @@ export class DemoComponent {
   // }
 }
   }
-}
+
+
+  // video player
+  albums = [
+    {
+      name: 'Album 1',
+      videos: [
+        { title: 'Video 1-1', url: 'assets/videos/CoolieNo1User - Google Chrome 2024-07-29 12-17-23.mp4' },
+        { title: 'Video 1-2', url: 'assets/videos/test-relationship.mp4' },
+        { title: 'Video 1-3', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
+      ]
+    },
+    {
+      name: 'Album 2',
+      videos: [
+        { title: 'Video 2-1', url: 'assets/videos/exam-mr-bean.mp4' },
+        { title: 'Video 2-2', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
+        { title: 'Video 2-3', url: 'assets/videos/test-relationship.mp4' },
+      ]
+    },
+    {
+      name: 'Album 3',
+      videos: [
+        { title: 'Video 3-1', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
+        { title: 'Video 3-2', url: 'assets/videos/test-relationship.mp4' },
+        { title: 'Video 3-3', url: 'assets/videos/exam-mr-bean.mp4' },
+      ]
+    },
+    {
+      name: 'Album 4',
+      videos: [
+        { title: 'Video 4-1', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
+        { title: 'Video 4-2', url: 'assets/videos/test-relationship.mp4' },
+        { title: 'Video 4-3', url: 'assets/videos/exam-mr-bean.mp4' },
+      ]
+    }
+  ]; selectedAlbumIndex: number | null = null;
+  selectedVideoIndex: number | null = null;
+  videoProgress: number[] = [];
+
+  selectAlbum(albumIndex: number, videoIndex: number): void {
+    this.selectedAlbumIndex = albumIndex;
+    this.selectedVideoIndex = videoIndex;
+    this.videoProgress = Array(this.albums[albumIndex].videos.length).fill(0);
+  }
+
+  get currentVideoUrl(): string | null {
+    if (this.selectedAlbumIndex !== null && this.selectedVideoIndex !== null) {
+      return this.albums[this.selectedAlbumIndex].videos[this.selectedVideoIndex].url;
+    }
+    return null;
+  }
+
+  playPreviousVideo(): void {
+    if (this.selectedVideoIndex !== null && this.selectedVideoIndex > 0) {
+      this.selectedVideoIndex--;
+    } else {
+      this.closeVideo();
+    }
+  }
+
+  playNextVideo(): void {
+    if (
+      this.selectedVideoIndex !== null &&
+      this.selectedAlbumIndex !== null &&
+      this.selectedVideoIndex < this.albums[this.selectedAlbumIndex].videos.length - 1
+    ) {
+      this.selectedVideoIndex++;
+    } else {
+      this.closeVideo();
+    }
+  }
+
+  closeVideo(): void {
+    this.selectedAlbumIndex = null;
+    this.selectedVideoIndex = null;
+    this.videoProgress = [];
+  }
+
+  onVideoClick(event: MouseEvent): void {
+    const videoElement = event.target as HTMLElement;
+    const clickX = event.clientX;
+    const videoWidth = videoElement.offsetWidth;
+
+    if (clickX < videoWidth / 2) {
+      this.playPreviousVideo();
+    } else {
+      this.playNextVideo();
+    }
+  }
+
+  onTimeUpdate(event: Event): void {
+    const videoElement = event.target as HTMLVideoElement;
+    if (this.selectedVideoIndex !== null) {
+      this.videoProgress[this.selectedVideoIndex] = (videoElement.currentTime / videoElement.duration) * 100;
+    }
+  }
+
+  onVideoEnded(): void {
+    this.playNextVideo(); // Automatically play the next video
+  }}

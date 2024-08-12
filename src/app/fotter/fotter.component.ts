@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class FotterComponent {
   activeIcon: string = 'home'; // Default active icon
 
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   ngOnInit() {
     // Listen for route changes
@@ -27,6 +27,7 @@ export class FotterComponent {
     this.activeIcon = icon;
     const userId=localStorage.getItem('userId');
     if (!userId) {
+      alert("Please log in ")
       this.router.navigate(['auth']);
     }
     else{

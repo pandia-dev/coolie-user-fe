@@ -88,7 +88,7 @@ span {
   }
   
   .material-symbols-outlined {
-    font-size: 2rem;
+    font-size: 28px;
     color: rgba(0, 0, 0, 0.5);
   }
   
@@ -100,7 +100,7 @@ span {
     background-color: rgba(214, 13, 10, 1);
      /* Red background for active item */
     border-radius: 25px; /* Optional: rounded corners */
-    padding: 0.5rem 1rem; /* Padding to create the pill effect */
+    padding: 0.5rem 0.5rem;
   }
   
   .active .material-symbols-outlined {

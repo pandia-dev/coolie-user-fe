@@ -10,7 +10,7 @@ export class BookingsService {
   name:any;
   phoneNumber:any;
   selectedJob:any;
-  constructor(private http:HttpClient) { }
+  constructor(private readonly http:HttpClient) { }
 
   selectedJobDetails(job:any){
     console.log(job);

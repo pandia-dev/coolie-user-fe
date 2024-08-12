@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FcmService } from './fcm.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'CoolieNo.1_User';
-  constructor(){
-    
+  constructor(private fcmService:FcmService){
+    this.fcmService.requestPermission();
+    this.fcmService.receiveMessage();
   }
 }

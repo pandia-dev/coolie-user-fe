@@ -13,10 +13,10 @@ export class SeperateSecheduleComponent {
 
 
   subCategoryVarient:any=[];
-  constructor(private mycartService:MyCartService,
-              private location:Location,
-              private orderService:OrdersService,
-              private razorpayService:RazorpayService
+  constructor(private readonly mycartService:MyCartService,
+              private readonly location:Location,
+              private readonly orderService:OrdersService,
+              private  razorpayService:RazorpayService
   ){
     
   }

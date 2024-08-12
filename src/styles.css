@@ -4,4 +4,38 @@ body{
     height: 100vh;
     margin: 0;
     padding: 0;
-}
+}.toast-center-center {
+    position: relative;
+    top: 50%;
+    width: 20rem;
+    height: 10rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .toast-custom-class {
+    padding: 2rem;
+    background-color: green !important;
+    color: white !important;
+    position: relative;
+    padding-left: 50px; /* Adjust padding for icon space */
+  }
+  
+  .toast-custom-class .toast-title {
+    font-weight: bold;
+  }
+  
+  .toast-custom-class .toast-message {
+    color: white !important;
+  }
+  
+  .toast-custom-class::before {
+    content: "✓"; /* Simple checkmark */
+    font-size: 30px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 10px; /* Adjust to position the icon */
+    transform: translateY(-50%);
+  }
+  

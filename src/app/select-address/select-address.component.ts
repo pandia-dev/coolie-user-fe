@@ -11,10 +11,10 @@ import { OrdersService } from '../orders.service';
 })
 export class SelectAddressComponent {
   constructor(
-    private router: Router,
-    private servicesService: ServiceService,
-    private userDetailsService: UserDetailsService,
-    private orderService:OrdersService
+    private readonly router: Router,
+    private readonly servicesService: ServiceService,
+    private readonly userDetailsService: UserDetailsService,
+    private readonly orderService:OrdersService
   ) {
     this.getAddress()
    

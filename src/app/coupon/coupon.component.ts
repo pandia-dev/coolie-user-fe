@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './coupon.component.css'
 })
 export class CouponComponent {
-  constructor(private location:Location){
+  constructor(private readonly location:Location){
 
   }
   navToBack(){

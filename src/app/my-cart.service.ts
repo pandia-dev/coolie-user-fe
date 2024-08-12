@@ -1,16 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyCartService {
 
-  constructor(private http:HttpClient,
-              private authenticationService:AuthenticationService
+  constructor(private readonly http:HttpClient,
+              private readonly authenticationService:AuthenticationService
   ) { }
+
+  userId=localStorage.getItem('userId');
+
 
   addToCart(userId:string,item:any){
     console.log(this.authenticationService.userDetails);
@@ -29,7 +32,7 @@ export class MyCartService {
     return this.http.post<any>(api,requestBody);
   }
 
-  getCartItems(userId: any){
+  getCartItems(userId: any):Observable<any>{
     const api=`https://api.coolieno1.in/v1.0/users/cart/${userId}`;
     return this.http.get<any>(api);
   }
@@ -38,5 +41,15 @@ export class MyCartService {
     const userId=localStorage.getItem('userId')
     const api=`https://api.coolieno1.in/v1.0/users/cart/${userId}/${id}`;
     return this.http.delete<any>(api)
+  }
+
+  getingLength(): Observable<number> {
+    return this.getCartItems(this.userId).pipe(
+      map(response => response[0]?.items.length || 0), // Return length or 0 if response[0] is undefined
+      catchError(err => {
+        console.error(err);
+        return of(0); // Return 0 in case of error
+      })
+    );
   }
 }

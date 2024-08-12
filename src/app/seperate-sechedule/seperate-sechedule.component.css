@@ -8,7 +8,7 @@
     position: relative;
     left: 2.5%;
     top: 2.5%;
-    
+    padding-bottom: 2rem;
   }
   .subCategoryVarient-div {
       flex: 2;
@@ -215,14 +215,14 @@
     width: 50%;
     height: 2rem;
     color: #ffff;
-    background-color: red;
+    background-color: rgba(114, 211, 136, 1);
     border-radius: 0.8rem;
     border: 0;
 
   }
   .amount button{
     border: 0;
-    background: rgba(205, 46, 40, 1);
+    background:  rgba(114, 211, 136, 1);
 
     color:  rgba(255, 255, 255, 1);
     font-family: Roboto;

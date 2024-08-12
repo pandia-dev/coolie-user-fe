@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 const routes:Routes=[
+  {path:'',component:TrackproviderComponent},
   {path:'trackProvider',component:TrackproviderComponent}
 ]
 @NgModule({

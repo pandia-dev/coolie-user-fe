@@ -23,4 +23,42 @@
     </div>
     
   </div>
+
+
+  <div style="width: 100%;">
+    <div class="album-container">
+      <div *ngFor="let album of albums; let i = index" class="album">
+        <h3>{{ album.name }}</h3>
+        <div class="video-list">
+          <div *ngFor="let video of album.videos; let j = index" class="video-thumbnail">
+            <button (click)="selectAlbum(i, j)">
+              <img src="assets/thumbnail.jpg" alt="{{ video.title }}">
+              <p>{{ video.title }}</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Fullscreen Video Modal -->
+    <div *ngIf="currentVideoUrl" class="video-modal">
+      <div class="status-bar">
+        <div *ngFor="let progress of videoProgress" class="progress-bar">
+          <div class="progress" [style.width.%]="progress"></div>
+        </div>
+      </div>
+      <div class="video-wrapper">
+        <button (click)="closeVideo()" class="close-button">exit</button>
+        <video 
+          #videoPlayer 
+          [src]="currentVideoUrl" 
+          autoplay 
+          (click)="onVideoClick($event)" 
+          (timeupdate)="onTimeUpdate($event)"
+          (ended)="onVideoEnded()">
+        </video>
+      </div>
+    </div>
+    
+  </div>
   

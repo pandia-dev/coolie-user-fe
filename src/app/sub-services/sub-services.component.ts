@@ -16,12 +16,13 @@ export class SubServicesComponent implements OnInit{
   services:any=[];
   subCategory:any=[];
   subCategoryVarient:any=[];
-  constructor(private servicesService:ServiceService,
-              private location:Location,
-              private router:Router,
-              private orderService:OrdersService,
-              private myCartService:MyCartService,
-              private authenticService:AuthenticationService
+  noOfItems:number=0;
+  constructor(private readonly servicesService:ServiceService,
+              private readonly location:Location,
+              private readonly router:Router,
+              private readonly orderService:OrdersService,
+              private readonly myCartService:MyCartService,
+              private readonly authenticService:AuthenticationService
   )
   {
     console.log(this.servicesService.selectedIndex);
@@ -29,11 +30,11 @@ export class SubServicesComponent implements OnInit{
     console.log(this.selectedCat);
    this.getService();
    this.getSubCategories(this.servicesService.selectedServiceId)
-    
+   
   }
 
   ngOnInit(): void {
-   
+   this.getCount()
   }
   
   getService(){
@@ -46,6 +47,7 @@ export class SubServicesComponent implements OnInit{
       }
     )
   }
+
 
   selectedCat:any;
   selectedCategory(item:any,index:any){
@@ -92,18 +94,41 @@ export class SubServicesComponent implements OnInit{
       },(error)=>{
         console.log(error);
         this.subCategoryVarient=[];
+        this.filteredVarients=[];
       }
     )
   }
 
+
+    // filtering according to service varient
+    selectedIndex: number = 0; 
+    filteredVarients:any=[]
+    selectVariant(index: number): void {
+      this.selectedIndex = index;
+     const  selectedVariantName=this.subCategoryVarient[0].categoryId.uiVariant[this.selectedIndex];
+
+     const temp=this.subCategoryVarient;
+     this.filteredVarients=this.subCategoryVarient;
+     const filter=temp.filter((item: any)=>{
+      return item.serviceVariants.some((variant: any) => variant.variantName === selectedVariantName);
+     })
+     console.log(filter);
+     this.filteredVarients=filter;
+    }
+
+
+    // adding the quantity 
   addingCount(item:any){
     item = item.map((element: any) => {
       return { ...element, count: 1 };
     });
     
     console.log(item);
-    this.subCategoryVarient=item
+    this.subCategoryVarient=item;
+    this.selectVariant(0);
   }
+
+
   expandedIndex: number | null = null;
 
   expand(index: number): void {
@@ -126,7 +151,14 @@ export class SubServicesComponent implements OnInit{
     
   }
 
+
+  // adding item to cart
   addItem(item: any): void {
+
+    if(!localStorage.getItem('userId')){
+      alert("Please log in for add item");
+      this.router.navigate(['auth']);
+    }
     console.log(item);
     const userId=this.authenticService.getFromLocalStorage();
     const requestBody=[{
@@ -141,7 +173,8 @@ export class SubServicesComponent implements OnInit{
     this.myCartService.addToCart(userId,requestBody).subscribe(
       (res)=>{
         console.log(res);
-        this.router.navigate(['myCart'])
+        // this.router.navigate(['myCart'])
+       this.getCount()
       },
       (err)=>{
         console.log(err);
@@ -151,7 +184,13 @@ export class SubServicesComponent implements OnInit{
     // console.log(`Index: ${index}, Count: ${this.counts}`);
   }
 
-
+// getting the count inside the cart
+  getCount(){
+    this.myCartService.getingLength().subscribe(length => {
+        console.log(`Number of items in cart: ${length}`);
+        this.noOfItems=length;
+      });
+    }
   navToCart(){
     this.router.navigate(['myCart'])
   }

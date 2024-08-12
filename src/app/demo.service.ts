@@ -10,7 +10,7 @@ export class DemoService {
   private categoryDataUrl = 'https://api.coolieno1.in/v1.0//core/categories'; // Replace with your API endpoint
   private selectedCategoryId = new BehaviorSubject<number | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getCategoryData(): Observable<any[]> {
     return this.http.get<any[]>(this.categoryDataUrl);

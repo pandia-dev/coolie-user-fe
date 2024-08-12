@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private readonly http:HttpClient,
+              private readonly router:Router
+  ) { }
 
   userId=localStorage.getItem('userId');
   categoryId:any[]=[];
@@ -101,6 +104,7 @@ export class OrdersService {
       response => {
         console.log(response);
         alert("Order post Sucessfully")
+        this.router.navigate(['afterOrder'])
       },
       err => {
         console.log(err);

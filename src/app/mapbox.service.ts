@@ -66,7 +66,7 @@ export class MapboxService {
           if (data.features.length === 0) {
             throw new Error('No results found');
           }
-          const placeName = data.features[0].place_name;
+          const placeName = data.features;
           observer.next(placeName);
           observer.complete();
         })

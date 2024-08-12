@@ -12,7 +12,7 @@ export class InviteComponent {
     this.location.back();
   }
 
-  constructor(private location:Location)
+  constructor(private readonly location:Location)
   {
 
   }

@@ -9,7 +9,7 @@ import { MyCartService } from '../my-cart.service';
 export class OrderSummaryComponent {
       amount:number=230;
       subCategoryVarient:any=[];
-      constructor(private mycartService:MyCartService){
+      constructor(private readonly mycartService:MyCartService){
         
       }
       ngOnInit(): void {

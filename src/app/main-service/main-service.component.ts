@@ -12,8 +12,8 @@ export class MainServiceComponent {
   @ViewChild('footer') footer!: FotterComponent;
   services:any=[];
   imageLink=""
-  constructor(private servicesService:ServiceService,
-              private router:Router
+  constructor(private readonly servicesService:ServiceService,
+              private readonly router:Router
   ){
     this.getService();
     this.getMostBookedservices();
@@ -62,7 +62,7 @@ export class MainServiceComponent {
   }
 
   searchTerm:string='';
-  serviceResponse:any;
+  private serviceResponse:any;
   search(event:any){
     
     let  filteredServices:any;

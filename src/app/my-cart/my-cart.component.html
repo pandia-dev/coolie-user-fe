@@ -58,10 +58,12 @@
                     calendar_today
                 </span>&nbsp;
             </div>
-            <p>
-                <input type="checkbox" (change)="navToSeparate()"><span> would like to have individual & different slots
-                for services choosen</span>
-            </p>
+            @if (subCategoryVarient.length>1) {
+                <p class="chec-box">
+                    <input type="checkbox" (change)="navToSeparate()"> &nbsp;<span> would like to have individual & different slots
+                        for services choosen</span>
+                </p>
+            }
             <div class="working-dates" *ngIf="showScheduleSection">
                 <ng-container *ngFor="let item of nextFourDays; let index = index;">
                   <div class="datess" [ngClass]="{'selected': selectedIndex === index}" (click)="selected(item, index)">

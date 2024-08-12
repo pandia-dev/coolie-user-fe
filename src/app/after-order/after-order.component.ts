@@ -8,8 +8,10 @@ import { Router } from '@angular/router';
 })
 export class AfterOrderComponent {
 
-  constructor(private router:Router){
-
+  constructor(private readonly router:Router){
+    setTimeout(()=>{
+      this.router.navigate(['provider/trackProvider'])
+    })
   }
 
   navTo(){

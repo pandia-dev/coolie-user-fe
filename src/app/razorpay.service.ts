@@ -10,7 +10,7 @@ export class RazorpayService {
 
   userId=localStorage.getItem('providerId');
   userCredit:number=0;
-  constructor(private http:HttpClient) { }
+  constructor(private readonly http:HttpClient) { }
 
   payWithRazorpay(amount: number, orderId: string, currency: string): Observable<any> {
     return new Observable(observer => {

@@ -9,7 +9,7 @@ export class ServiceService {
 
 
   api='https://api.coolieno1.in/v1.0'
-  constructor(private http:HttpClient) { }
+  constructor(private readonly http:HttpClient) { }
 
   getService():Observable<any>{
   
@@ -36,5 +36,15 @@ export class ServiceService {
   getSubCatVarient(catId:any,subCatId:any){
     const api=`https://api.coolieno1.in/v1.0/core/services/filter/${catId}/${subCatId}`;
     return this.http.get<any>(api)
+  }
+
+  getCoreService():Observable<any>{
+    const api='https://api.coolieno1.in/v1.0/admin/our-core-services';
+    return this.http.get<any>(api);
+  }
+
+  getReels():Observable<any>{
+    const api='https://api.coolieno1.in/v1.0/admin/reels/video';
+    return this.http.get<any>(api);
   }
 }

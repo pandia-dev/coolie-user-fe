@@ -67,13 +67,13 @@
 .ads{
   width: 100%;
   
-  height: 8rem;
+  height: 9rem;
   /* border: 1px solid black; */
 }
 .wrapperrr
 {
   width: 100%;
-  height: 99%;
+  height: 100%;
     display: flex;
     grid-gap: 0.8rem;
     overflow-x: auto;
@@ -84,7 +84,7 @@
 }
 .wrapperrr-div{
   flex: 0 0 100%; 
-  height: 100%;
+  height: 8rem;
   /* border: 1px solid blue */
 }
 
@@ -93,7 +93,8 @@
   max-width: 500px;
   height: 100%;
   /* border: 1px solid black; */
-  /* object-fit: cover; */
+  object-fit: cover;
+  border-radius: 0.4rem;
   /* border: 2px solid green; */
 }
 
@@ -108,9 +109,9 @@
 }
 .service-tittle,.cover-tittle{
   font-family: 'Roboto' sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 500;
-  line-height: 18.75px;
+  line-height: 16.75px;
   text-align: left;
 
 }
@@ -156,7 +157,7 @@
   color: rgba(255, 255, 255, 1);
   
 }
-.mostBooked{
+.mostBooked, .coreServices{
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -165,20 +166,40 @@
   height: 100%;
   text-align: left;
 }
+
 .mostBooked img{
   width: 100%;
   height: 10rem;
+  border-radius: 0.4rem;
 }
-.mostBooked span, .cover-description{
+.mostBooked span, .cover-description, .coreServices span{
   font-family: 'Roboto' sans-serif;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 400;
-  line-height: 14.06px;
+  line-height: 13.06px;
   text-align: left;
 
 }
+.coreServices{
+  width: 20%;
+  flex: 0 0 20%; 
+  border-radius: 0.4rem;
+}
+.coreServices img{
+  width: 100%;
+  height: 6rem;
+  border-radius: 0.4rem;
+}
+.coreServices button{
+  background-color: rgba(244, 8, 42, 1);
+  border: none;
+  height: 1.5rem;
+
+  border-radius: 0.2rem;
+  color: #ffff;
+}
 .cover-container{
-  height: min-content;
+  height:max-content;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -190,7 +211,7 @@
   gap: 0.5rem;
   align-items: center;
   flex: 0 0 90%; 
-  height: 10rem;
+  height: 11rem;
   text-align: left;
   border-radius: 0.4rem;
   /* border: 1px solid black; */
@@ -199,7 +220,7 @@
 
 .covered img{
   width: 50%;
-  height: 100%;
+  height: 11rem;
 }
 .covered section{
   padding-left: 0.5rem;
@@ -249,3 +270,92 @@
   text-align: left;
   color: black;
 }
+
+
+/* video reels */
+.album-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.album {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 200px;
+  text-align: center;
+}
+
+.video-list {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.video-thumbnail {
+  margin: 5px 0;
+}
+
+.video-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px; /* Reduced width for a more compact view */
+  max-height: 80vh; /* Maintain aspect ratio while fitting on the screen */
+  overflow: hidden; /* Hide overflow to create a more immersive experience */
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  display: flex;
+  gap: 2px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.progress-bar {
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.progress {
+  height: 100%;
+  background-color: #fff; /* White progress bar for visibility */
+}
+

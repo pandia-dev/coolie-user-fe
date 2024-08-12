@@ -73,6 +73,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UserDetailsService } from '../user-details.service';
+import { BookingsService } from '../bookings.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -82,18 +83,19 @@ import { UserDetailsService } from '../user-details.service';
 export class EditProfileComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  userDetails: FormGroup;
+ public userDetails: FormGroup;
   profileImageUrl: string = 'assets/icons/profile.png'; // Default image URL
   selectedFile: File | null = null;
   constructor(private fb: FormBuilder,
-    private afAuth: AngularFireAuth,
-    private location:Location,
-    private userDetailsService:UserDetailsService
+    private readonly afAuth: AngularFireAuth,
+    private readonly location:Location,
+    private readonly userDetailsService:UserDetailsService,
+    private readonly bookingService:BookingsService
   ) {
     this.userDetails = this.fb.group({
       name: [''],
       email: [''],
-      phone: this.userDetailsService.userDetailsFromGoogle.user.phone
+      phone: this.bookingService.phoneNumber
     });
   }
 

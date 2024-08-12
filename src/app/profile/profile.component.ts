@@ -16,11 +16,11 @@ export class ProfileComponent {
   userName:string='';
   image:string='';
   whatsAppStaus='on';
-  constructor(private location:Location,
-              private router:Router,
-              private authentication:AuthenticationService,
-              private bookingService:BookingsService,
-              private userDetailsService:UserDetailsService
+  constructor(private readonly location:Location,
+              private readonly router:Router,
+              private readonly authentication:AuthenticationService,
+              private readonly bookingService:BookingsService,
+              private readonly userDetailsService:UserDetailsService
   )
   {
    this.authentication.getUser().subscribe(
@@ -155,10 +155,11 @@ export class ProfileComponent {
   navBack(){
     this.location.back()
   }
-  navToVisiting(){
-    this.router.navigate(['visitingCard'])
+
+  
+  navToEditProfile(){
+    this.router.navigate(['editProfile']);
   }
- 
   statusChange(){
     if (this.whatsAppStaus==='on') {
       this.whatsAppStaus='off';

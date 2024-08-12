@@ -2,7 +2,7 @@
 <div class="container">
   
     <div class="sub-container">
-        <div class="profile">
+        <div class="profile" (click)="navToEditProfile()">
             <div class="image">
                 @if(!image){
                     <img src="../assets/icons/profile.png" class="profile-img"> 
@@ -24,12 +24,18 @@
         <div class="category">
             @for (item of options; track $index) {
                 <br>
-            <div >
-                <div (click)="navTo(item.name)">
-                    <span class="material-symbols-outlined" >{{item.icon}}</span> &nbsp;
+            <div  (click)="navTo(item.name)">
+                <div (click)="navTo(item.name)" class="icons-div">
+                    <span class="material-symbols-outlined" >{{item.icon}}</span>
                     <span>{{item.name}}</span>
                 </div>
-                <span class="material-symbols-outlined" (click)="openPolicies(item.name)" >arrow_forward_ios</span>
+                @if (item.name==='Policies') {
+                    <span class="material-symbols-outlined" (click)="openPolicies(item.name)" >arrow_forward_ios</span>
+               
+                }@else {
+                    <span class="material-symbols-outlined"  (click)="navTo(item.name)" >arrow_forward_ios</span>
+               
+                }
                
             </div>
             @if (item.name==='Policies') {
@@ -53,4 +59,4 @@
     <div style="height:5rem;"></div>
 </div>
 
-<app-fotter></app-fotter>
+<app-fotter id="footer"></app-fotter>

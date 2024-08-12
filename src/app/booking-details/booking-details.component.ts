@@ -16,9 +16,9 @@ export class BookingDetailsComponent {
   navToHelp(){
     this.router.navigate(['help'])
   }
-  constructor(private bookingService:BookingsService,
-              private location:Location,
-              private router:Router
+  constructor(private readonly bookingService:BookingsService,
+              private readonly location:Location,
+              private readonly router:Router
   )
   {
     this.bookingService.getSelectedJob()
@@ -27,7 +27,7 @@ export class BookingDetailsComponent {
    console.log( this.jobDetails);
   }
 
-  jobDetails:any=[];
+  public jobDetails:any=[];
   noJobs:any=[
     {
      jobs:[{

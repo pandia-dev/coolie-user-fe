@@ -11,7 +11,7 @@ export class UserDetailsService {
   fullAddress:any[]=[]
   selectedAddress:any=[];
   userDetailsFromGoogle:any;
-  constructor(private http:HttpClient) { }
+  constructor(private readonly http:HttpClient) { }
 
   getAddress():Observable<any>{
    const userId=localStorage.getItem('userId')
@@ -23,7 +23,7 @@ export class UserDetailsService {
     this.fullAddress=[];
     address.forEach((element:any) => {
       const name=element.username;
-      const respAddress=element.address+element.landmark+element.city+element.state+element.pincode
+      const respAddress=element.address+" "+element.landmark+" "+element.city+" "+element.state+element.pincode
       const coordinates:any[] =[element.longitude,element.latitude];
       this.fullAddress.push({'id':element._id,'mobilenumber':element.mobileNumber,'name':name,'address':respAddress,'coordinates':coordinates})
     });

@@ -17,11 +17,11 @@ export class MyCartComponent implements OnInit{
   navToBack(){
     this.location.back();
   }
-  constructor(private mycartService:MyCartService,
-              private router:Router,
-              private orderService:OrdersService,
-              private location:Location,
-              private razorpayService:RazorpayService
+  constructor(private readonly mycartService:MyCartService,
+              private readonly router:Router,
+              private readonly orderService:OrdersService,
+              private readonly location:Location,
+              private readonly razorpayService:RazorpayService
   ){
     
   }

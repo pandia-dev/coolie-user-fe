@@ -40,11 +40,11 @@ import { Router } from '@angular/router';
 export class LogInComponent implements OnInit {
 
   phoneNumber: any;
-  recaptchaVerifier: any;
+  private recaptchaVerifier: any;
 
   constructor(private fb: FormBuilder, 
-    private authService: AuthenticationService,
-    private router:Router) { }
+    private readonly authService: AuthenticationService,
+    private readonly router:Router) { }
 
   ngOnInit() {
     this.setupRecaptcha();
@@ -66,6 +66,7 @@ export class LogInComponent implements OnInit {
     this.authService.getOtp(this.phoneNumber).subscribe(
       (response: any)=>{
         console.log(response);
+        this.authService.otp=response;
         this.router.navigate(['auth/verifyOTP']);
       },(error: any)=>{
         console.log(error);
