@@ -25,9 +25,10 @@ export class SubServicesComponent implements OnInit, OnDestroy {
   public filteredVarients: any = []
   public expandedIndex: number | null = null;
   private initialSubs!: Subscription;
-  private subCatSubsSubs!: Subscription;
+  private subCatVarSubs!: Subscription;
   private getCountSubs!: Subscription;
   private cartSubs: Subscription[] = [];
+  private subCatSubs: Subscription[] = [];
 
   constructor(private readonly servicesService: ServiceService,
     private readonly location: Location,
@@ -39,9 +40,10 @@ export class SubServicesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.initialSubs.unsubscribe();
-    this.subCatSubsSubs.unsubscribe();
+    this.subCatVarSubs.unsubscribe();
     this.getCountSubs.unsubscribe();
     this.subscriptionService.unsubscribeAll(this.cartSubs);
+    this.subscriptionService.unsubscribeAll(this.subCatSubs);
   }
 
   ngOnInit(): void {
@@ -64,6 +66,31 @@ export class SubServicesComponent implements OnInit, OnDestroy {
     )
   }
 
+  selectedCategory(item:any,index:any){
+    this.servicesService.selectedServiceId=item;
+    this.servicesService.selectedIndex=index;
+    this.getSubCategories(item)
+    this.selectedCat=index;
+  }
+
+  getSubCategories(id:any){
+    const subCatSubs = this.servicesService.getSubCategoty(id).subscribe(
+      (response)=>{
+        console.log(response);
+        this.subCategory=response;
+        this.getSubCategoryVarient();
+      },(error)=>{
+        console.log(error);
+        console.log(error.error.message);
+        if (error.error.message==='No subcategories found for this category') {
+          this.subCategory=[];
+          this.subCategoryVarient=[];
+        }
+      }
+    );
+    this.subscriptionService.collectSubscriptions(this.subCatSubs, subCatSubs);
+  }
+
   selectSubCategory(index: any) {
     this.selectedSubCatIndex = index
     this.getSubCategoryVarient()
@@ -76,7 +103,7 @@ export class SubServicesComponent implements OnInit, OnDestroy {
   getSubCategoryVarient() {
     const selectedId = this.servicesService.selectedServiceId;
     const selectedSubCatId = this.subCategory[this.selectedSubCatIndex]._id;
-    this.subCatSubsSubs = this.servicesService.getSubCatVarient(selectedId, selectedSubCatId).subscribe(
+    this.subCatVarSubs = this.servicesService.getSubCatVarient(selectedId, selectedSubCatId).subscribe(
       (response) => {
         console.log(response);
         console.log(response.data);

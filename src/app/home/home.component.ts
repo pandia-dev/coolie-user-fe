@@ -91,15 +91,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.initialSubscription = combineLatest(
       this.servicesService.getService(),
       this.servicesService.getMostBooked(),
-      this.authentication.getUser(),
+      // Commented temprorily since getUser() is failing
+      // this.authentication.getUser(),
       this.servicesService.getCoreService(),
       this.servicesService.getReels()).subscribe(
-        ([service, mostBookedService, user, coreService, reels]) => {
+        ([service, mostBookedService, coreService, reels]) => {
           this.service = service;
           this.mostBooked = mostBookedService;
-          this.userDetailsService.userDetailsFromGoogle = user;
-          this.bookingService.name = user.displayName;
-          this.bookingService.phoneNumber = user.phone;
+          // this.userDetailsService.userDetailsFromGoogle = user;
+          // this.bookingService.name = user.displayName;
+          // this.bookingService.phoneNumber = user.phone;
           this.coreServices = coreService;
           this.albums = reels;
         },

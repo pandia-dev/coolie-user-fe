@@ -249,7 +249,7 @@ export class AuthenticationService {
   setToken(response: any) {
     this.userDetails = response.user
     localStorage.setItem("token", response.token);
-    localStorage.setItem("userId", response.user._id)
+    localStorage.setItem("userId", response.user._id);
     this.router.navigate(['home']);
   }
 
