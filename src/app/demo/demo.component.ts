@@ -7,21 +7,57 @@ import { DemoService } from '../demo.service';
 })
 export class DemoComponent {
 
-
-  categoryData: any[] = [];
-  selectedCategoryIdLocal: number | null = null;
   @ViewChild('containerRef') containerRef: ElementRef | undefined;
 
-  tabWidth = 200; // Width of each tab
-  visibleTabs = 5; // Number of tabs visible at once
-  buttonWidth = 70; // Width of the arrow buttons
+  public categoryData: any[] = [];
+  public selectedCategoryIdLocal: number | null = null;
+  private readonly tabWidth = 200; // Width of each tab
+  private readonly visibleTabs = 5; // Number of tabs visible at once
+  private readonly buttonWidth = 70; // Width of the arrow buttons
 
-  constructor(private readonly categoryService: DemoService) {}
+  public albums = [
+    {
+      name: 'Album 1',
+      videos: [
+        { title: 'Video 1-1', url: 'assets/videos/CoolieNo1User - Google Chrome 2024-07-29 12-17-23.mp4' },
+        { title: 'Video 1-2', url: 'assets/videos/test-relationship.mp4' },
+        { title: 'Video 1-3', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
+      ]
+    },
+    {
+      name: 'Album 2',
+      videos: [
+        { title: 'Video 2-1', url: 'assets/videos/exam-mr-bean.mp4' },
+        { title: 'Video 2-2', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
+        { title: 'Video 2-3', url: 'assets/videos/test-relationship.mp4' },
+      ]
+    },
+    {
+      name: 'Album 3',
+      videos: [
+        { title: 'Video 3-1', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
+        { title: 'Video 3-2', url: 'assets/videos/test-relationship.mp4' },
+        { title: 'Video 3-3', url: 'assets/videos/exam-mr-bean.mp4' },
+      ]
+    },
+    {
+      name: 'Album 4',
+      videos: [
+        { title: 'Video 4-1', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
+        { title: 'Video 4-2', url: 'assets/videos/test-relationship.mp4' },
+        { title: 'Video 4-3', url: 'assets/videos/exam-mr-bean.mp4' },
+      ]
+    }
+  ]; selectedAlbumIndex: number | null = null;
+  private selectedVideoIndex: number | null = null;
+  public videoProgress: number[] = [];
+
+  constructor(private readonly categoryService: DemoService) { }
 
   ngOnInit(): void {
     this.categoryService.getCategoryData().subscribe(
       data => this.categoryData = [...data, ...data, ...data], // Cloning the list for circular scrolling
-      (      error: any) => console.error('Error fetching category data', error)
+      (error: any) => console.error('Error fetching category data', error)
     );
   }
 
@@ -67,60 +103,21 @@ export class DemoComponent {
         left: this.tabWidth * this.visibleTabs,
         behavior: 'smooth'
       });
-  //     setTimeout(() => {
-  //       if (
-  //         this.containerRef.nativeElement.scrollLeft >=
-  //         this.containerRef.nativeElement.scrollWidth - this.containerRef.nativeElement.clientWidth
-  //       ) {
-  //         this.containerRef.nativeElement.scrollTo({
-  //           left: this.containerRef.nativeElement.scrollWidth / 3,
-  //           behavior: 'instant'
-  //         });
-  //       }
-  //     }, 500);
-  //   }
-  // }
-}
-  }
-
-
-  // video player
-  albums = [
-    {
-      name: 'Album 1',
-      videos: [
-        { title: 'Video 1-1', url: 'assets/videos/CoolieNo1User - Google Chrome 2024-07-29 12-17-23.mp4' },
-        { title: 'Video 1-2', url: 'assets/videos/test-relationship.mp4' },
-        { title: 'Video 1-3', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
-      ]
-    },
-    {
-      name: 'Album 2',
-      videos: [
-        { title: 'Video 2-1', url: 'assets/videos/exam-mr-bean.mp4' },
-        { title: 'Video 2-2', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
-        { title: 'Video 2-3', url: 'assets/videos/test-relationship.mp4' },
-      ]
-    },
-    {
-      name: 'Album 3',
-      videos: [
-        { title: 'Video 3-1', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
-        { title: 'Video 3-2', url: 'assets/videos/test-relationship.mp4' },
-        { title: 'Video 3-3', url: 'assets/videos/exam-mr-bean.mp4' },
-      ]
-    },
-    {
-      name: 'Album 4',
-      videos: [
-        { title: 'Video 4-1', url: 'assets/videos/fb-f-band-i-gdown.mp4' },
-        { title: 'Video 4-2', url: 'assets/videos/test-relationship.mp4' },
-        { title: 'Video 4-3', url: 'assets/videos/exam-mr-bean.mp4' },
-      ]
+      //     setTimeout(() => {
+      //       if (
+      //         this.containerRef.nativeElement.scrollLeft >=
+      //         this.containerRef.nativeElement.scrollWidth - this.containerRef.nativeElement.clientWidth
+      //       ) {
+      //         this.containerRef.nativeElement.scrollTo({
+      //           left: this.containerRef.nativeElement.scrollWidth / 3,
+      //           behavior: 'instant'
+      //         });
+      //       }
+      //     }, 500);
+      //   }
+      // }
     }
-  ]; selectedAlbumIndex: number | null = null;
-  selectedVideoIndex: number | null = null;
-  videoProgress: number[] = [];
+  }
 
   selectAlbum(albumIndex: number, videoIndex: number): void {
     this.selectedAlbumIndex = albumIndex;
@@ -182,4 +179,5 @@ export class DemoComponent {
 
   onVideoEnded(): void {
     this.playNextVideo(); // Automatically play the next video
-  }}
+  }
+}

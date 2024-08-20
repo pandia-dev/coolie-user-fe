@@ -7,32 +7,42 @@ import { Observable } from 'rxjs';
 })
 export class UserDetailsService {
 
-  userName:any;
-  fullAddress:any[]=[]
-  selectedAddress:any=[];
-  userDetailsFromGoogle:any;
-  constructor(private readonly http:HttpClient) { }
+  userName: any;
+  fullAddress: any[] = []
+  selectedAddress: any = [];
+  userDetailsFromGoogle: any;
+  constructor(private readonly http: HttpClient) { }
 
-  getAddress():Observable<any>{
-   const userId=localStorage.getItem('userId')
-    const api=`https://api.coolieno1.in/v1.0/users/user-address/${userId}`
+  getAddress(): Observable<any> {
+    const userId = localStorage.getItem('userId')
+    const api = `https://api.coolieno1.in/v1.0/users/user-address/${userId}`
     return this.http.get<any>(api);
   }
+  
+  saveAddress(address: any): Observable<any> {
+    const api = 'https://api.coolieno1.in/v1.0/users/user-address';
+    return this.http.post<any>(api, address);
+  }
 
-  formatingAddress(address:any){
-    this.fullAddress=[];
-    address.forEach((element:any) => {
-      const name=element.username;
-      const respAddress=element.address+" "+element.landmark+" "+element.city+" "+element.state+element.pincode
-      const coordinates:any[] =[element.longitude,element.latitude];
-      this.fullAddress.push({'id':element._id,'mobilenumber':element.mobileNumber,'name':name,'address':respAddress,'coordinates':coordinates})
+  deleteAddress(id: any) {    
+    const api = `https://api.coolieno1.in/v1.0/users/user-address/${id}`;
+    return this.http.delete(api);
+  }
+
+  formatingAddress(address: any) {
+    this.fullAddress = [];
+    address.forEach((element: any) => {
+      const name = element.username;
+      const respAddress = element.address + " " + element.landmark + " " + element.city + " " + element.state + element.pincode
+      const coordinates: any[] = [element.longitude, element.latitude];
+      this.fullAddress.push({ 'id': element._id, 'mobilenumber': element.mobileNumber, 'name': name, 'address': respAddress, 'coordinates': coordinates })
     });
 
     console.log(this.fullAddress);
   }
 
-  edit(data:any){
-    const api='https://api.coolieno1.in/v1.0/users/userAuth/login';
-   return this.http.post(api,data);
+  edit(data: any) {
+    const api = 'https://api.coolieno1.in/v1.0/users/userAuth/login';
+    return this.http.post(api, data);
   }
 }

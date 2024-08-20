@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookingsService } from '../bookings.service';
 import { FotterComponent } from '../fotter/fotter.component';
@@ -9,41 +9,48 @@ import { FotterComponent } from '../fotter/fotter.component';
   templateUrl: './booking-history.component.html',
   styleUrl: './booking-history.component.css'
 })
-export class BookingHistoryComponent {
+export class BookingHistoryComponent implements OnInit {
+
   @ViewChild('footer') footer!: FotterComponent;
-  navToBack(){
-    this.location.back()
+  public jobs: any[] = []
+
+  constructor(private readonly location: Location,
+    private readonly bookingService: BookingsService,
+    private readonly router: Router
+  ) {
   }
-  constructor(private readonly location:Location,
-              private readonly bookingService:BookingsService,
-              private readonly router:Router
-  ){
+
+  ngOnInit(): void {
     this.getBookingHistory();
   }
-  public jobs:any[]=[]
 
-  getBookingHistory(){
+  navToBack() {
+    this.location.back()
+  }
+
+  getBookingHistory() {
     this.bookingService.getBookingHistory().subscribe({
-      next:(response)=>{
+      next: (response) => {
         console.log(response);
         // this.jobs=response;
         this.addingTotalAmount(response);
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err);
       }
     })
   }
-  selectedJob(item:any){
+  
+  selectedJob(item: any) {
     console.log(item);
     this.bookingService.selectedJobDetails(item);
     this.router.navigate(['bookingDetails'])
   }
 
-  addingTotalAmount(history:any[]){
+  addingTotalAmount(history: any[]) {
     history.forEach((entry: any) => {
       let totalAmount = 0; // Initialize totalAmount outside the inner loop
-    
+
       if (entry.items && Array.isArray(entry.items)) {
         entry.items.forEach((item: any) => {
           // Check if serviceVariants array exists and has at least one element
@@ -56,10 +63,10 @@ export class BookingHistoryComponent {
       }
       entry.totalAmount = totalAmount;
       // console.log(totalAmount);
-       // Output the calculated total amount for the current entry
+      // Output the calculated total amount for the current entry
     });
-    
-      this.jobs=history
-      console.log(this.jobs);
+
+    this.jobs = history
+    console.log(this.jobs);
   }
 }

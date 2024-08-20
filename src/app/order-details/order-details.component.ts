@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class OrderDetailsComponent {
 
-  orderDetails:any=[
+  public orderDetails:any=[
     {
       name:'beauty and saloon',
       price:'12,999',

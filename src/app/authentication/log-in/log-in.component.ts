@@ -13,7 +13,7 @@
 //   constructor(private fb:FormBuilder,
 //               private authService:AuthenticationService
 //   ){
-    
+
 //   }
 
 //   getOtp(){
@@ -25,26 +25,30 @@
 // }
 
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AuthenticationService } from '../../authentication.service';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { Router } from '@angular/router';
+import { SubscriptionService } from '../../subscription.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.css']
 })
-export class LogInComponent implements OnInit {
+export class LogInComponent implements OnInit, OnDestroy {
 
-  phoneNumber: any;
+  public phoneNumber: any;
   private recaptchaVerifier: any;
+  private optSubscriptions: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, 
+  constructor(private readonly fb: FormBuilder,
     private readonly authService: AuthenticationService,
-    private readonly router:Router) { }
+    private readonly router: Router,
+    private readonly subscriptionService: SubscriptionService) { }
 
   ngOnInit() {
     this.setupRecaptcha();
@@ -61,20 +65,24 @@ export class LogInComponent implements OnInit {
       });
     }
   }
-  getOtp() {
-    // this.authService.handlePhoneLogin(this.phoneNumber);
-    this.authService.getOtp(this.phoneNumber).subscribe(
-      (response: any)=>{
+  public getOtp() {
+    const optSubscription = this.authService.getOtp(this.phoneNumber).subscribe(
+      (response: any) => {
         console.log(response);
-        this.authService.otp=response;
+        this.authService.otp = response;
         this.router.navigate(['auth/verifyOTP']);
-      },(error: any)=>{
+      }, (error: any) => {
         console.log(error);
       }
-    )
+    );
+    this.subscriptionService.collectSubscriptions(this.optSubscriptions, optSubscription);
   }
 
   googleSign() {
     this.authService.handleGoogleLogin();
+  }
+  
+  ngOnDestroy(): void {
+    this.subscriptionService.unsubscribeAll(this.optSubscriptions);
   }
 }

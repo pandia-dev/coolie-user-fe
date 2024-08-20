@@ -1,109 +1,120 @@
 import { Location } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { FotterComponent } from '../fotter/fotter.component';
 import { BookingsService } from '../bookings.service';
 import { UserDetailsService } from '../user-details.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit, OnDestroy {
+
   @ViewChild('footer') footer!: FotterComponent;
-  userName:string='';
-  image:string='';
-  whatsAppStaus='on';
-  constructor(private readonly location:Location,
-              private readonly router:Router,
-              private readonly authentication:AuthenticationService,
-              private readonly bookingService:BookingsService,
-              private readonly userDetailsService:UserDetailsService
-  )
-  {
-   this.authentication.getUser().subscribe(
-    (response)=>{
-      console.log(response);
-      if(response!==null){
-          this.userDetailsService.userDetailsFromGoogle=response;
+  public userName: string = '';
+  public image: string = '';
+  private whatsAppStaus = 'on';
+  showPolicy: boolean = false;
+  public options: any = [
+    {
+      icon: 'location_on',
+      name: 'Saved Addresses'
+    },
+    {
+      icon: 'poker_chip',
+      name: 'My Rewards'
+    },
+    {
+      icon: 'local_activity',
+      name: 'Coupons'
+    },
+
+    {
+      icon: 'overview',
+      name: 'My bookings'
+    },
+    {
+      icon: 'featured_seasonal_and_gifts',
+      name: 'Invite a friend'
+    },
+    {
+      icon: 'account_balance_wallet',
+      name: 'Wallet'
+    },
+
+    {
+      icon: 'info',
+      name: "About coolie No 1"
+    },
+    {
+      icon: 'policy',
+      name: "Policies"
+    },
+    {
+      icon: 'question_mark',
+      name: "Help center"
+    },
+    {
+      icon: 'logout',
+      name: "Log Out"
+    },
+  ];
+  public policies: any = [
+    { name: 'Terms and conditions' },
+    { name: 'Refund policy' },
+    { name: 'Cancellation policy' },
+    { name: 'Privacy policy' }
+  ];
+  private initialSubs!: Subscription;
+
+  constructor(private readonly location: Location,
+    private readonly router: Router,
+    private readonly authentication: AuthenticationService,
+    private readonly bookingService: BookingsService,
+    private readonly userDetailsService: UserDetailsService
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.initialSubs = this.authentication.getUser().subscribe(
+      (response) => {
+        console.log(response);
+        if (response !== null) {
+          this.userDetailsService.userDetailsFromGoogle = response;
           // console.log(response.user.otp);
-          this.userName=response.displayName;
-          this.bookingService.name=response.displayName;
-          this.bookingService.phoneNumber=response.phone;
-          this.image=response.photoURL   ; 
-          console.log(this.image);  
-          if (response.email===undefined) {
+          this.userName = response.displayName;
+          this.bookingService.name = response.displayName;
+          this.bookingService.phoneNumber = response.phone;
+          this.image = response.photoURL;
+          console.log(this.image);
+          if (response.email === undefined) {
             const userConfirmed = confirm("Please verify your email");
             if (userConfirmed) {
               this.router.navigate(['editProfile'])
-            } 
+            }
           }
         }
-    
-    },(error)=>{
-      console.log(error);
-    }
-   )
-  }
-  options:any=[
-    {
-      icon:'location_on',
-      name:'Saved Addresses'
-    },
-    {
-      icon:'poker_chip',
-      name:'My Rewards'
-    },
-    {
-      icon:'local_activity',
-      name:'Coupons'
-    },
-  
-    {
-      icon:'overview',
-      name:'My bookings'
-    },
-    {
-      icon:'featured_seasonal_and_gifts',
-      name:'Invite a friend'
-    },
-    {
-      icon:'account_balance_wallet',
-      name:'Wallet'
-    },
-    
-    {
-      icon:'info',
-      name:"About coolie No 1"
-    },
-    {
-      icon:'policy',
-      name:"Policies"
-    },
-    {
-      icon:'question_mark',
-      name:"Help center"
-    },
-    {
-      icon:'logout',
-      name:"Log Out"
-    },
-  ]
 
-  policies:any=[
-    {name:'Terms and conditions'},
-    {name:'Refund policy'},
-    {name:'Cancellation policy'},
-    {name:'Privacy policy'}
-  ]
+      }, (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.initialSubs.unsubscribe();
+  }
+
   navTo(cat: string): void {
     console.log(cat);
-    if (cat==='Policies') {
-      this.showPolicy=!this.showPolicy;
+    if (cat === 'Policies') {
+      this.showPolicy = !this.showPolicy;
     }
-    switch(cat) {
+    switch (cat) {
       case 'Saved Addresses':
         this.router.navigate(['address']);
         break;
@@ -123,51 +134,50 @@ export class ProfileComponent {
       case 'Wallet':
         this.router.navigate(['wallet']);
         break;
-     
-        case 'About coolie No 1':
+
+      case 'About coolie No 1':
         this.router.navigate(['about']);
         break;
-        case 'Log Out':
+      case 'Log Out':
         this.logout()
         break;
-        case 'Help center':
+      case 'Help center':
         this.router.navigate(['help']);
         break;
       default:
         console.log('No matching case found');
     }
   }
-  
-  showPolicy:boolean=false;
-  openPolicies(item:any){
-    console.log("policies",item);
-    if (item==='Policies') {
-      this.showPolicy=!this.showPolicy
-     
+
+  openPolicies(item: any) {
+    console.log("policies", item);
+    if (item === 'Policies') {
+      this.showPolicy = !this.showPolicy
+
     }
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem('userId');
     this.router.navigate(['auth']);
   }
 
-  navBack(){
+  navBack() {
     this.location.back()
   }
 
-  
-  navToEditProfile(){
+
+  navToEditProfile() {
     this.router.navigate(['editProfile']);
   }
-  statusChange(){
-    if (this.whatsAppStaus==='on') {
-      this.whatsAppStaus='off';
+  statusChange() {
+    if (this.whatsAppStaus === 'on') {
+      this.whatsAppStaus = 'off';
     }
-    else if ( this.whatsAppStaus='off') {
-      this.whatsAppStaus='on';
-    } 
-    
+    else if (this.whatsAppStaus = 'off') {
+      this.whatsAppStaus = 'on';
+    }
+
   }
 
 }

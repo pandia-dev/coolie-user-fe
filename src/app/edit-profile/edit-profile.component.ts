@@ -25,16 +25,16 @@
 //       name:'',
 //       email:'',
 //       image:'',
-     
+
 //       phone:''
 //     })
-    
+
 //   }
 
 //   async emailVerify(){
 //   this.authenticationService.handleGoogleLogin();
 //    await console.log(this.authenticationService.handleGoogleLogin());
- 
+
 //   }
 
 //   navToBack(){
@@ -65,38 +65,40 @@
 
 
 import { Location } from '@angular/common';
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AuthenticationService } from '../authentication.service';
-
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UserDetailsService } from '../user-details.service';
 import { BookingsService } from '../bookings.service';
+import { Subscription } from 'rxjs';
+import { SubscriptionService } from '../subscription.service';
 
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.css']
 })
-export class EditProfileComponent {
+export class EditProfileComponent implements OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
- public userDetails: FormGroup;
-  profileImageUrl: string = 'assets/icons/profile.png'; // Default image URL
-  selectedFile: File | null = null;
+  public userDetails: FormGroup = this.fb.group({
+    name: [''],
+    email: [''],
+    phone: this.bookingService.phoneNumber
+  });
+  public profileImageUrl: string = 'assets/icons/profile.png'; // Default image URL
+  private selectedFile: File | null = null;
+  private editSubscriptions: Subscription[] = [];
+
   constructor(private fb: FormBuilder,
     private readonly afAuth: AngularFireAuth,
-    private readonly location:Location,
-    private readonly userDetailsService:UserDetailsService,
-    private readonly bookingService:BookingsService
+    private readonly location: Location,
+    private readonly userDetailsService: UserDetailsService,
+    private readonly bookingService: BookingsService,
+    private readonly subscriptionService: SubscriptionService
   ) {
-    this.userDetails = this.fb.group({
-      name: [''],
-      email: [''],
-      phone: this.bookingService.phoneNumber
-    });
   }
 
   navToBack() {
@@ -104,25 +106,24 @@ export class EditProfileComponent {
   }
 
   async emailVerify() {
-    
-      const provider = new firebase.auth.GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account'
-      });
-      let details;
-      try {
-        const result:any = await this.afAuth.signInWithPopup(provider);
-        console.log('Google login result:', result);
-        console.log(result.user.multiFactor.user.email);
-        const email = result.user.multiFactor.user.email;
-        this.userDetails.patchValue({ email });
-       
-      } catch (error: any) {
-       alert("some thing went wrong");
-      }
-  
-      return details;
-    
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
+    let details;
+    try {
+      const result: any = await this.afAuth.signInWithPopup(provider);
+      console.log('Google login result:', result);
+      console.log(result.user.multiFactor.user.email);
+      const email = result.user.multiFactor.user.email;
+      this.userDetails.patchValue({ email });
+
+    } catch (error: any) {
+      alert("some thing went wrong");
+    }
+
+    return details;
+
   }
 
   triggerFileInput() {
@@ -144,32 +145,37 @@ export class EditProfileComponent {
     }
   }
 
-  save(){
+  save() {
     const formData = new FormData();
     formData.append('name', this.userDetails.get('name')!.value);
     formData.append('email', this.userDetails.get('email')!.value);
     // formData.append('phone', this.userDetails.get('phone')!.value);
 
-    if (this.userDetailsService.userDetailsFromGoogle.user.phone!=this.userDetails.get('phone')!.value) {
+    if (this.userDetailsService.userDetailsFromGoogle.user.phone != this.userDetails.get('phone')!.value) {
       alert("you cannot change the mobile number")
     }
-    else{
+    else {
       formData.append('phone', this.userDetails.get('phone')!.value);
     }
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
 
-    this.userDetailsService.edit(formData).subscribe(
+    const editSubscription = this.userDetailsService.edit(formData).subscribe(
       {
-        next:(response)=>{
+        next: (response) => {
           console.log(response);
         },
-        error:(err)=>{
+        error: (err) => {
           console.log(err);
         }
       }
-    )
+    );
+    this.subscriptionService.collectSubscriptions(this.editSubscriptions, editSubscription);
+  }
+  
+  ngOnDestroy(): void {
+    this.subscriptionService.unsubscribeAll(this.editSubscriptions);
   }
 }
 

@@ -1,38 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from '../service.service';
 import { FotterComponent } from '../fotter/fotter.component';
 import { UserDetailsService } from '../user-details.service';
 import { BookingsService } from '../bookings.service';
 import { AuthenticationService } from '../authentication.service';
+import { combineLatest, Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
   @ViewChild('footer') footer!: FotterComponent;
-  constructor(
-    private readonly router: Router,
-    private readonly servicesService: ServiceService,
-    private readonly authentication: AuthenticationService,
-    private readonly bookingService: BookingsService,
-
-    private readonly userDetailsService: UserDetailsService
-  ) {
-    // this.router.navigate(['auth'])
-    this.getService();
-  }
-
-  ngOnInit(): void {
-    this.getMostBookedservices();
-    this.getUser();
-    setTimeout(() => {
-      this.getCoreService();
-    }, 1000);
-    this.getReels();
-  }
+  private initialSubscription!: Subscription;
+  albums: { _id: string; videoUrl: string }[] = [];
+  selectedVideoIndex: number | null = null;
+  videoProgress: number[] = [];
   public ads = [
     {
       src: '/assets/ads/ads.png',
@@ -90,6 +77,38 @@ export class HomeComponent implements OnInit {
     },
   ];
 
+  constructor(
+    private readonly router: Router,
+    private readonly servicesService: ServiceService,
+    private readonly authentication: AuthenticationService,
+    private readonly bookingService: BookingsService,
+    private readonly userDetailsService: UserDetailsService
+  ) {
+    // this.router.navigate(['auth']);
+  }
+
+  ngOnInit(): void {
+    this.initialSubscription = combineLatest(
+      this.servicesService.getService(),
+      this.servicesService.getMostBooked(),
+      this.authentication.getUser(),
+      this.servicesService.getCoreService(),
+      this.servicesService.getReels()).subscribe(
+        ([service, mostBookedService, user, coreService, reels]) => {
+          this.service = service;
+          this.mostBooked = mostBookedService;
+          this.userDetailsService.userDetailsFromGoogle = user;
+          this.bookingService.name = user.displayName;
+          this.bookingService.phoneNumber = user.phone;
+          this.coreServices = coreService;
+          this.albums = reels;
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error.message);
+        }
+      );
+  }
+
   getService() {
     this.servicesService.getService().subscribe(
       (response) => {
@@ -127,12 +146,6 @@ export class HomeComponent implements OnInit {
       },
     });
   }
-
-  // getting reels
-  // Component Code
-  albums: { _id: string; videoUrl: string }[] = [];
-  selectedVideoIndex: number | null = null;
-  videoProgress: number[] = [];
 
   getReels() {
     this.servicesService.getReels().subscribe({
@@ -226,4 +239,9 @@ export class HomeComponent implements OnInit {
   navToMainService() {
     this.router.navigate(['mainService']);
   }
+
+  ngOnDestroy(): void {
+    this.initialSubscription.unsubscribe();
+  }
+
 }

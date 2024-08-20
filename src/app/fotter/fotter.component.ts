@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
   styleUrl: './fotter.component.css'
 })
 export class FotterComponent {
-  activeIcon: string = 'home'; // Default active icon
+  public activeIcon: string = 'home'; // Default active icon
 
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router) { }
 
   ngOnInit() {
     // Listen for route changes
@@ -25,15 +25,15 @@ export class FotterComponent {
 
   changeColor(icon: string, item: string) {
     this.activeIcon = icon;
-    const userId=localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId');
     if (!userId) {
       alert("Please log in ")
       this.router.navigate(['auth']);
     }
-    else{
+    else {
       this.router.navigate([item]);
     }
-    
+
     console.log(item);
   }
 

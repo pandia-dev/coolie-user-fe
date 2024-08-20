@@ -86,7 +86,7 @@
 //     }
 //   }
 
- 
+
 // }
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -102,27 +102,23 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthenticationService {
   phoneNumber: string = '';
-  otp:any;
+  otp: any;
   verificationId: string = '';
-  
   recaptchaVerifier: firebase.auth.RecaptchaVerifier | undefined;
 
   constructor(
     private afAuth: AngularFireAuth,
-    private readonly toastService:ToastrsService,
+    private readonly toastService: ToastrsService,
     private readonly router: Router,
-    private readonly http:HttpClient
+    private readonly http: HttpClient
   ) {
-   
-  }
-
-  ngOnInit() {
     if (!firebase.apps.length) {
       firebase.initializeApp(fireBaseCredential.fireBaseConfig);
-    }else{
+    } else {
       console.log("not connected");
+    }
   }
-  }
+
 
   setupRecaptcha() {
     console.log("about to in");
@@ -137,7 +133,7 @@ export class AuthenticationService {
     }
   }
 
-  userDetailsFromGoogle:any;
+  userDetailsFromGoogle: any;
   async handleGoogleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({
@@ -148,19 +144,19 @@ export class AuthenticationService {
       const result = await this.afAuth.signInWithPopup(provider);
       console.log('Google login result:', result);
       console.log('Logged in user details:', result.user);
-      
+
       // this.sendGoogleSignIn(result.user)
-      this.userDetailsFromGoogle=result.user;
+      this.userDetailsFromGoogle = result.user;
       alert("please verify phone number");
-     
+
       console.log(this.userDetailsFromGoogle.email);
       console.log(this.userDetailsFromGoogle.multiFactor.user);
-     
-     
-      return  details=this.userDetailsFromGoogle.multiFactor.user;
-     
+
+
+      return details = this.userDetailsFromGoogle.multiFactor.user;
+
     } catch (error: any) {
-      this.toastService.showError(error.message,"error");
+      this.toastService.showError(error.message, "error");
     }
 
     return details;
@@ -170,7 +166,7 @@ export class AuthenticationService {
     this.phoneNumber = phoneNumber;
     this.setupRecaptcha();
     const appVerifier = this.recaptchaVerifier!;
-    console.log(appVerifier,"cap");
+    console.log(appVerifier, "cap");
     try {
       const number = `+91${this.phoneNumber}`;
       const confirmationResult = await this.afAuth.signInWithPhoneNumber(number, appVerifier);
@@ -199,41 +195,41 @@ export class AuthenticationService {
   //   }
   // }
 
- 
-  getOtp(phone:any):any{
+
+  getOtp(phone: any): any {
     console.log(this.userDetailsFromGoogle);
-    this.phoneNumber=phone;
-    const api='https://api.coolieno1.in/v1.0/users/userAuth/send-otp';
-    const requestBody={
-      phone:phone
+    this.phoneNumber = phone;
+    const api = 'https://api.coolieno1.in/v1.0/users/userAuth/send-otp';
+    const requestBody = {
+      phone: phone
     }
-    return this.http.post(api,requestBody)
+    return this.http.post(api, requestBody)
   }
 
-  verifyOtp(otp:any){
-    const api="https://api.coolieno1.in/v1.0/users/userAuth/login";
+  verifyOtp(otp: any) {
+    const api = "https://api.coolieno1.in/v1.0/users/userAuth/login";
     console.log(this.userDetailsFromGoogle);
-    let requestBody:any;
+    let requestBody: any;
     if (!this.userDetailsFromGoogle) {
-      requestBody={
-        phone:this.phoneNumber,
-        otp:otp
+      requestBody = {
+        phone: this.phoneNumber,
+        otp: otp
       }
 
     } else {
-       requestBody={
-        phone:this.phoneNumber,
-        otp:otp,
-        email:this.userDetailsFromGoogle.email,
-       name:this.userDetailsFromGoogle.displayName,
-        displayName:this.userDetailsFromGoogle.displayName,
-        photoURL:this.userDetailsFromGoogle.photoURL,
-        providerId:this.userDetailsFromGoogle.productId,
+      requestBody = {
+        phone: this.phoneNumber,
+        otp: otp,
+        email: this.userDetailsFromGoogle.email,
+        name: this.userDetailsFromGoogle.displayName,
+        displayName: this.userDetailsFromGoogle.displayName,
+        photoURL: this.userDetailsFromGoogle.photoURL,
+        providerId: this.userDetailsFromGoogle.productId,
       }
     }
-   
+
     console.log(requestBody);
-    return this.http.post(api,requestBody)
+    return this.http.post(api, requestBody)
   }
 
   // sendGoogleSignIn(user:any){
@@ -249,21 +245,21 @@ export class AuthenticationService {
   //   return this.http.post(api,requestBody)
   // }
 
-  userDetails:any;
-  setToken(response:any){
-    this.userDetails=response.user
-    localStorage.setItem("token",response.token);
-    localStorage.setItem("userId",response.user._id)
+  userDetails: any;
+  setToken(response: any) {
+    this.userDetails = response.user
+    localStorage.setItem("token", response.token);
+    localStorage.setItem("userId", response.user._id)
     this.router.navigate(['home']);
   }
 
-  getFromLocalStorage():any{
+  getFromLocalStorage(): any {
     return localStorage.getItem('userId')
   }
 
-  getUser(){
-    const userId=localStorage.getItem('userId')
-    const api=`https://api.coolieno1.in/v1.0/users/userAuth/${userId}`
+  getUser() {
+    const userId = localStorage.getItem('userId')
+    const api = `https://api.coolieno1.in/v1.0/users/userAuth/${userId}`
     return this.http.get<any>(api)
   }
 }

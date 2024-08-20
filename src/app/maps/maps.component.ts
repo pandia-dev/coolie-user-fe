@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import {  Inject, PLATFORM_ID } from '@angular/core';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import mapboxgl from 'mapbox-gl';
-import { FormsModule } from '@angular/forms';
 import { isPlatformBrowser, Location } from '@angular/common';
 @Component({
   selector: 'app-maps',
@@ -9,17 +8,15 @@ import { isPlatformBrowser, Location } from '@angular/common';
   styleUrl: './maps.component.css'
 })
 export class MapsComponent {
-  destinationInput: string = '';
-  suggestions: any[] = [];
-  map: mapboxgl.Map | undefined;
-  userMarker: mapboxgl.Marker | undefined;
-  destinationMarker: mapboxgl.Marker | undefined;
+  public destinationInput: string = '';
+  public suggestions: any[] = [];
+  public map: mapboxgl.Map | undefined;
+  private userMarker: mapboxgl.Marker | undefined;
+  private destinationMarker: mapboxgl.Marker | undefined;
   private currentLocation: [number, number] = [0, 0];
   private watchId: number | undefined;
-  // private directionsLayerId: string = 'directions';
-  // private popup: mapboxgl.Popup | undefined;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: object,private readonly location:Location) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: object, private readonly location: Location) { }
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -33,7 +30,7 @@ export class MapsComponent {
       navigator.geolocation.clearWatch(this.watchId);
     }
   }
-  navToBack(){
+  navToBack() {
     this.location.back();
   }
   initializeMap() {
